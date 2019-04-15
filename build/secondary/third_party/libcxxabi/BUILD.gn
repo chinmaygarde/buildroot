@@ -36,6 +36,9 @@ source_set("libcxxabi") {
     "_LIBCXXABI_NO_EXCEPTIONS",
     "_LIBCXXABI_BUILDING_LIBRARY",
     "LIBCXXABI_SILENT_TERMINATE",
+
+    # See https://reviews.llvm.org/D42987
+    "_LIBCPP_ENABLE_CXX17_REMOVED_UNEXPECTED_FUNCTIONS",
   ]
 
   # ICU uses RTTI, so we need to build libcxxabi with support for it,
