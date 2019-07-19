@@ -189,7 +189,6 @@ config("compiler") {
       common_mac_flags += [
         "-arch",
         "x86_64",
-        "-march=core2",
       ]
     } else if (current_cpu == "x86") {
       common_mac_flags += [
@@ -526,6 +525,7 @@ config("compiler_arm_fpu") {
 config("runtime_library") {
   cflags = []
   cflags_cc = []
+  cflags_objcc = []
   defines = []
   ldflags = []
   lib_dirs = []
@@ -557,8 +557,6 @@ config("runtime_library") {
       ]
     }
 
-    defines += [ "__GNU_SOURCE=1" ]  # Necessary for clone().
-
     # TODO(jdduke) Re-enable on mips after resolving linking
     # issues with libc++ (crbug.com/456380).
     if (current_cpu != "mipsel" && current_cpu != "mips64el") {
@@ -580,11 +578,6 @@ config("runtime_library") {
               "$android_ndk_root/sysroot/usr/include/$android_target_triple",
               root_build_dir),
       "-D__ANDROID_API__=$android_api_level",
-    ]
-
-    include_dirs = [
-      "//third_party/libcxx/include",
-      "//third_party/libcxxabi/include",
     ]
 
     # libunwind and libandroid_support also live in $android_libcpp_root.
@@ -611,21 +604,18 @@ config("runtime_library") {
     }
   }
 
-  # Linux standard library setup.
-  # We compile our own libc++ on all Linux targets except i386 (for
-  # gen_snapshot) where this is not supported.
-  if (is_linux) {
-    if (current_cpu != "x86") {
-      cflags_cc += [ "-nostdinc++" ]
-      include_dirs = [
-        "//third_party/libcxx/include",
-        "//third_party/libcxxabi/include",
-      ]
-    } else {
-      cflags_cc += [ "-stdlib=libstdc++" ]
-      ldflags += [ "-stdlib=libstdc++" ]
-      libs += [ "gcc" ]
-    }
+  if (!is_win) {
+    common_cc_flags = [ "-nostdinc++" ]
+
+    cflags_cc += common_cc_flags
+    cflags_objcc += common_cc_flags
+
+    include_dirs = [
+      "//third_party/libcxx/include",
+      "//third_party/libcxxabi/include",
+    ]
+
+    ldflags += [ "-nostdlib++" ]
   }
 }
 
@@ -659,7 +649,7 @@ if (is_win) {
   default_warning_flags += [
     # Enables.
     "-Wendif-labels",  # Weird old-style text after an #endif.
-    "-Werror", # Warnings as errors.
+    "-Werror",  # Warnings as errors.
 
     # Disables.
     "-Wno-missing-field-initializers",  # "struct foo f = {0};"
