@@ -389,8 +389,11 @@ config("compiler") {
   # Linux-specific compiler flags setup.
   # ------------------------------------
   if (is_linux) {
-    cflags += [ "-pthread" ]
-    ldflags += [ "-pthread" ]
+    # HACK: Android but not really.
+    if (current_cpu != "arm") {
+      cflags += [ "-pthread" ]
+      ldflags += [ "-pthread" ]
+    }
 
     if (current_cpu == "arm64") {
       cflags += [ "--target=aarch64-linux-gnu" ]

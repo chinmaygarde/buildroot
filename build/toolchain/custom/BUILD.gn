@@ -13,7 +13,7 @@ toolchain("custom") {
   cc = "${toolchain_bin}/clang"
   cxx = "${toolchain_bin}/clang++"
   ar = "${toolchain_bin}/${custom_target_triple}-ar"
-  ld = "${toolchain_bin}/clang++"
+  ld = "${toolchain_bin}/clang"
   readelf = "${toolchain_bin}/${custom_target_triple}-readelf"
   nm = "${toolchain_bin}/${custom_target_triple}-nm"
   strip = "${toolchain_bin}/${custom_target_triple}-strip"

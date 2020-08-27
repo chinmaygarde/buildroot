@@ -6,6 +6,7 @@ import("//build/config/linux/pkg_config.gni")
 import("//build/config/features.gni")
 import("//build/config/sysroot.gni")
 import("//build/config/ui.gni")
+import("//flutter/shell/platform/config.gni")
 
 config("sdk") {
   if (sysroot != "") {
@@ -23,40 +24,42 @@ config("sdk") {
   }
 }
 
-config("fontconfig") {
-  libs = [ "fontconfig" ]
-}
+if (enable_desktop_embeddings) {
+  config("fontconfig") {
+    libs = [ "fontconfig" ]
+  }
 
-pkg_config("freetype2") {
-  packages = [ "freetype2" ]
-}
+  pkg_config("freetype2") {
+    packages = [ "freetype2" ]
+  }
 
-config("x11") {
-  libs = [
-    "X11",
-    "Xcomposite",
-    "Xcursor",
-    "Xdamage",
-    "Xext",
-    "Xfixes",
-    "Xi",
-    "Xrender",
-    "Xtst",
-  ]
-}
+  config("x11") {
+    libs = [
+      "X11",
+      "Xcomposite",
+      "Xcursor",
+      "Xdamage",
+      "Xext",
+      "Xfixes",
+      "Xi",
+      "Xrender",
+      "Xtst",
+    ]
+  }
 
-config("xrandr") {
-  libs = [ "Xrandr" ]
-}
+  config("xrandr") {
+    libs = [ "Xrandr" ]
+  }
 
-config("xinerama") {
-  libs = [ "Xinerama" ]
-}
+  config("xinerama") {
+    libs = [ "Xinerama" ]
+  }
 
-config("xcomposite") {
-  libs = [ "Xcomposite" ]
-}
+  config("xcomposite") {
+    libs = [ "Xcomposite" ]
+  }
 
-config("xext") {
-  libs = [ "Xext" ]
+  config("xext") {
+    libs = [ "Xext" ]
+  }
 }

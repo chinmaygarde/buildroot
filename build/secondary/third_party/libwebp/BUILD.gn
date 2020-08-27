@@ -51,7 +51,8 @@ source_set("libwebp") {
     ":libwebp_sse41",
   ]
 
-  if (is_android) {
+  # HACK: Android but not really.
+  if (true) {
     deps += [ "//third_party/cpu-features" ]
   }
 
