@@ -1,0 +1,19 @@
+# Copyright 2013 The Flutter Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+source_root = "//third_party/spirv_reflect"
+
+config("spirv_reflect_config") {
+  include_dirs = [ source_root ]
+}
+
+source_set("spirv_reflect_flutter") {
+  public_configs = [ ":spirv_reflect_config" ]
+
+  sources = [
+    "$source_root/include/spirv/unified1/spirv.h",
+    "$source_root/spirv_reflect.c",
+    "$source_root/spirv_reflect.h",
+  ]
+}
